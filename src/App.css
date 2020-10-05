@@ -1,0 +1,19 @@
+:root {
+  --accent-color: #00a7e3;
+  --header-color: #0a192b;
+  --bg-color: #1c1d33;
+  --text-color: white;
+}
+
+body {
+  background-color: var(--bg-color);
+}
+
+.Header {
+  width: 100%;
+  background-color: var(--header-color);
+  color: var(--text-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
