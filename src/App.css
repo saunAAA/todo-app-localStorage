@@ -1,7 +1,7 @@
 :root {
   --accent-color: #00a7e3;
   --header-color: #0a192b;
-  --bg-color: #1c1d33;
+  --bg-color: #111122;
   --text-color: white;
 }
 
@@ -11,9 +11,13 @@ body {
 
 .Header {
   width: 100%;
-  background-color: var(--header-color);
+  background-color: var(--bg-color);
   color: var(--text-color);
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.Spacer {
+  height: 1rem;
 }

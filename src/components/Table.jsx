@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { forwardRef } from 'react';
 import Grid from '@material-ui/core/Grid';
 
-import MaterialTable from 'material-table';
+import MaterialTable, { MTableToolbar } from 'material-table';
+
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import Check from '@material-ui/icons/Check';
@@ -23,28 +24,60 @@ import Alert from '@material-ui/lab/Alert';
 import numberToTime from '../util/numberToTime';
 import { v4 as uuidv4 } from 'uuid';
 
+const iconColor = '#00a7e3';
+
 const tableIcons = {
-  Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
-  Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
-  Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-  Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
+  Add: forwardRef((props, ref) => (
+    <AddBox {...props} ref={ref} style={{ fill: iconColor }} />
+  )),
+  Check: forwardRef((props, ref) => (
+    <Check {...props} ref={ref} style={{ fill: iconColor }} />
+  )),
+  Clear: forwardRef((props, ref) => (
+    <Clear {...props} ref={ref} style={{ fill: iconColor }} />
+  )),
+  Delete: forwardRef((props, ref) => (
+    <DeleteOutline {...props} ref={ref} style={{ fill: iconColor }} />
+  )),
   DetailPanel: forwardRef((props, ref) => (
-    <ChevronRight {...props} ref={ref} />
+    <ChevronRight {...props} ref={ref} style={{ fill: iconColor }} />
   )),
-  Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
-  Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
-  Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
-  FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
-  LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
-  NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+  Edit: forwardRef((props, ref) => (
+    <Edit {...props} ref={ref} style={{ fill: iconColor }} />
+  )),
+  Export: forwardRef((props, ref) => (
+    <SaveAlt {...props} ref={ref} style={{ fill: iconColor }} />
+  )),
+  Filter: forwardRef((props, ref) => (
+    <FilterList {...props} ref={ref} style={{ fill: iconColor }} />
+  )),
+  FirstPage: forwardRef((props, ref) => (
+    <FirstPage {...props} ref={ref} style={{ fill: iconColor }} />
+  )),
+  LastPage: forwardRef((props, ref) => (
+    <LastPage {...props} ref={ref} style={{ fill: iconColor }} />
+  )),
+  NextPage: forwardRef((props, ref) => (
+    <ChevronRight {...props} ref={ref} style={{ fill: iconColor }} />
+  )),
   PreviousPage: forwardRef((props, ref) => (
-    <ChevronLeft {...props} ref={ref} />
+    <ChevronLeft {...props} ref={ref} style={{ fill: iconColor }} />
   )),
-  ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-  Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
-  SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
-  ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
-  ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
+  ResetSearch: forwardRef((props, ref) => (
+    <Clear {...props} ref={ref} style={{ fill: iconColor }} />
+  )),
+  Search: forwardRef((props, ref) => (
+    <Search {...props} ref={ref} style={{ fill: iconColor }} />
+  )),
+  SortArrow: forwardRef((props, ref) => (
+    <ArrowDownward {...props} ref={ref} style={{ fill: iconColor }} />
+  )),
+  ThirdStateCheck: forwardRef((props, ref) => (
+    <Remove {...props} ref={ref} style={{ fill: iconColor }} />
+  )),
+  ViewColumn: forwardRef((props, ref) => (
+    <ViewColumn {...props} ref={ref} style={{ fill: iconColor }} />
+  )),
 };
 
 const storageKey = 'saunAAA-todo-storage';
@@ -229,7 +262,14 @@ const Table = (props) => {
           )}
         </div>
         <MaterialTable
-          title="Todo-App"
+          title=""
+          components={{
+            Toolbar: (props) => (
+              <div style={{ backgroundColor: '#0a192b' }}>
+                <MTableToolbar {...props} />
+              </div>
+            ),
+          }}
           columns={columns}
           data={data}
           icons={tableIcons}
@@ -252,8 +292,16 @@ const Table = (props) => {
             actionsColumnIndex: -1,
             rowStyle: (rowData) => ({
               backgroundColor:
-                rowData.tableData.id === selectedRow ? '#EEE' : '#FFF',
+                rowData.tableData.id === selectedRow ? '#1c1d33' : '#0a192b',
+              color: '#FFF',
             }),
+            headerStyle: {
+              backgroundColor: '#00a7e3',
+              color: '#FFF',
+            },
+            searchFieldStyle: {
+              color: '#FFF',
+            },
           }}
           onRowClick={(event, rowData) => {
             setSelectedRow(rowData.tableData.id);
