@@ -20,6 +20,9 @@ import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import Alert from '@material-ui/lab/Alert';
 
+import numberToTime from '../util/numberToTime';
+import { v4 as uuidv4 } from 'uuid';
+
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
@@ -50,9 +53,13 @@ let init = false;
 const Table = (props) => {
   const columns = [
     { title: 'id', field: 'id', hidden: true },
-    { title: 'Status', field: 'status' },
+    {
+      title: 'Status',
+      field: 'status',
+      editable: 'never',
+    },
     { title: 'Aufgabe', field: 'task' },
-    { title: 'Dauer', field: 'duration' },
+    { title: 'Dauer', field: 'duration', editable: 'never' },
     { title: 'Startzeit', field: 'startTime', hidden: true },
     { title: 'Endzeit', field: 'endTime', hidden: true },
   ];
@@ -61,7 +68,7 @@ const Table = (props) => {
     id: 1234,
     status: 'standby',
     task: 'Programmiere die Todo-Liste',
-    duration: 0,
+    duration: '',
     startTime: 1,
     endTime: 2,
   };
@@ -69,6 +76,7 @@ const Table = (props) => {
   const [data, setData] = useState([]);
   const [iserror, setIserror] = useState(false);
   const [errorMessages, setErrorMessages] = useState([]);
+  const [selectedRow, setSelectedRow] = useState(null);
 
   useEffect(() => {
     if (init) {
@@ -134,6 +142,12 @@ const Table = (props) => {
     if (errorList.length < 1) {
       //no error
       try {
+        newData.id = uuidv4();
+        newData.startTime = 0;
+        newData.endTime = 0;
+        newData.duration = '';
+        newData.status = 'standby';
+
         let dataToAdd = [...data];
         dataToAdd.push(newData);
         setData(dataToAdd);
@@ -161,6 +175,41 @@ const Table = (props) => {
       resolve();
     } catch (error) {
       setErrorMessages(['Delete failed! Server error']);
+      setIserror(true);
+      resolve();
+    }
+  };
+
+  const handleRowClick = (rowData, resolve) => {
+    try {
+      const dataUpdate = [...data];
+      const index = rowData.tableData.id;
+      if (String(dataUpdate[index].status).trim().toLowerCase() === 'standby') {
+        //Todo active
+        dataUpdate[index].status = 'active';
+        dataUpdate[index].startTime = Date.now();
+      } else if (
+        String(dataUpdate[index].status).trim().toLowerCase() === 'active'
+      ) {
+        //Todo done
+        dataUpdate[index].status = 'done';
+        dataUpdate[index].endTime = Date.now();
+        dataUpdate[index].duration = numberToTime(
+          dataUpdate[index].endTime - dataUpdate[index].startTime
+        );
+      } else if (
+        String(dataUpdate[index].status).trim().toLowerCase() === 'done'
+      ) {
+        //Todo standby
+        dataUpdate[index].status = 'standby';
+        dataUpdate[index].duration = '';
+      }
+      setData([...dataUpdate]);
+      resolve();
+      setIserror(false);
+      setErrorMessages([]);
+    } catch (error) {
+      setErrorMessages(['Update failed! Server error']);
       setIserror(true);
       resolve();
     }
@@ -197,6 +246,20 @@ const Table = (props) => {
               new Promise((resolve) => {
                 handleRowDelete(oldData, resolve);
               }),
+          }}
+          options={{
+            paging: false,
+            actionsColumnIndex: -1,
+            rowStyle: (rowData) => ({
+              backgroundColor:
+                rowData.tableData.id === selectedRow ? '#EEE' : '#FFF',
+            }),
+          }}
+          onRowClick={(event, rowData) => {
+            setSelectedRow(rowData.tableData.id);
+            new Promise((resolve) => {
+              handleRowClick(rowData, resolve);
+            });
           }}
         />
       </Grid>
