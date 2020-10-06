@@ -23,6 +23,7 @@ import Alert from '@material-ui/lab/Alert';
 
 import numberToTime from '../util/numberToTime';
 import { v4 as uuidv4 } from 'uuid';
+import '../App.css';
 
 const iconColor = '#00a7e3';
 
@@ -98,7 +99,7 @@ const Table = (props) => {
   ];
 
   const initialData = {
-    id: 1234,
+    id: uuidv4(),
     status: 'standby',
     task: 'Programmiere die Todo-Liste',
     duration: '',
@@ -262,6 +263,7 @@ const Table = (props) => {
           )}
         </div>
         <MaterialTable
+          className="Table"
           title=""
           components={{
             Toolbar: (props) => (

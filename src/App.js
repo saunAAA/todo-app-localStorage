@@ -9,7 +9,6 @@ function App() {
       <div className="Header">
         <h1>TODOs</h1>
       </div>
-      <div className="Spacer"></div>
       <Table></Table>
     </div>
   );
