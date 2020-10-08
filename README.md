@@ -4,6 +4,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 This App uses React and the [material-table](https://material-table.com/#/) library.
 The Data is stored in the localStorage of the Browser. It is not recommended to save sensitive data in localStorage!
+The Data in localStorage is encrypted.
 The App doesn't use any API, or connections to any Webservers.
 
 ## Demo
