@@ -116,8 +116,8 @@ const Table = (props) => {
   useEffect(() => {
     if (init) {
       try {
-        //localStorage.setItem(storageKey, JSON.stringify(data));
-        encryptAndStore(data);
+        localStorage.setItem(storageKey, JSON.stringify(data));
+        //encryptAndStore(data);
       } catch (error) {
         console.log(error);
       }
@@ -128,8 +128,8 @@ const Table = (props) => {
     try {
       init = true;
       //setData([initialData, ...JSON.parse(localStorage.getItem(storageKey))]);
-      //const storage = JSON.parse(localStorage.getItem(storageKey));
-      const storage = decryptFromStore();
+      const storage = JSON.parse(localStorage.getItem(storageKey));
+      //const storage = decryptFromStore();
       if (storage) {
         setData(storage);
       } else {
