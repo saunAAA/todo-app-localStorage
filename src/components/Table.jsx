@@ -84,7 +84,7 @@ const tableIcons = {
 };
 
 let init = false;
-
+const storageKey = 'saunAAA-todo-storage';
 const Table = (props) => {
   const columns = [
     { title: 'id', field: 'id', hidden: true },
