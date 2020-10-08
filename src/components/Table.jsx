@@ -25,6 +25,8 @@ import numberToTime from '../util/numberToTime';
 import { v4 as uuidv4 } from 'uuid';
 import '../App.css';
 
+import { encryptAndStore, decryptFromStore } from '../util/crypt';
+
 const iconColor = '#00a7e3';
 
 const tableIcons = {
@@ -81,7 +83,6 @@ const tableIcons = {
   )),
 };
 
-const storageKey = 'saunAAA-todo-storage';
 let init = false;
 
 const Table = (props) => {
@@ -115,7 +116,8 @@ const Table = (props) => {
   useEffect(() => {
     if (init) {
       try {
-        localStorage.setItem(storageKey, JSON.stringify(data));
+        //localStorage.setItem(storageKey, JSON.stringify(data));
+        encryptAndStore(data);
       } catch (error) {
         console.log(error);
       }
@@ -126,7 +128,8 @@ const Table = (props) => {
     try {
       init = true;
       //setData([initialData, ...JSON.parse(localStorage.getItem(storageKey))]);
-      const storage = JSON.parse(localStorage.getItem(storageKey));
+      //const storage = JSON.parse(localStorage.getItem(storageKey));
+      const storage = decryptFromStore();
       if (storage) {
         setData(storage);
       } else {
